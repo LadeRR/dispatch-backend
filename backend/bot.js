@@ -16,7 +16,7 @@ const client = new Client({
   partials: [Partials.Channel, Partials.Message]
 });
 
-const BOT_TOKEN = process.env.DISCORD_TOKEN; // Environment variable'dan token al
+const BOT_TOKEN = 'MTQ2NjY1NTQ0NDQzNTk5Mjc4MA.GBx570.gohDAisICbJActTpktdeebvtLmgFfgAAluxnrk'; // Discord bot token'ını buraya yapıştır
 const GUILD_ID = '832511730625544242'; // Discord sunucu ID'ni buraya yaz (isteğe bağlı)
 
 // Express API (Server.js'den istek almak için)
