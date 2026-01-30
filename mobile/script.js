@@ -1,7 +1,5 @@
 const API_URL = 'https://dispatch-backend-32h8.onrender.com';
-
 const socket = io(API_URL);
-
 let currentUser;
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -9,14 +7,14 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   
   const username = document.getElementById('username').value;
   const password = 'OCST2020';  // Sabit şifre, istersen değiştir
-
+  
   try {
     const res = await fetch(`${API_URL}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password, type: 'mobile' })
     });
-
+    
     if (res.ok) {
       const data = await res.json();
       currentUser = data.user;
@@ -37,7 +35,6 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   }
 });
 
-// Mevcut çağrı gönderme aynı, ama callData'ya userId ekle: currentUser.id
 // Chat
 function sendChat() {
   const msg = document.getElementById('chatInput').value;
