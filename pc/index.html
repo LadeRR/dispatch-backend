@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCST Dispatch Terminal</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="crt">
+    <!-- Login Ekranı -->
+    <div id="loginScreen" class="screen">
+      <h1>OCST DISPATCH TERMINAL</h1>
+      <p>Dispatch Sistemi</p>
+      <form id="loginForm">
+        <input type="text" id="username" placeholder="KULLANICI ADI" required autocomplete="off">
+        <input type="password" id="password" placeholder="ŞİFRE" required autocomplete="off">
+        <button type="submit">SİSTEME BAĞLAN</button>
+      </form>
+    </div>
+    <!-- Ana Dashboard -->
+    <div id="mainScreen" class="screen hidden">
+      <div id="topBar">
+        <div id="logo">OCST</div>
+        <div id="stats">
+          <span id="totalCalls">Toplam Çağrı: 0</span>
+          <span id="pendingCalls">Bekleyen: 0</span>
+        </div>
+        <div id="topButtons">
+          <button id="markAllBtn">TÜM YENİLERİ ALINDI YAP</button>
+          <button id="clearAllBtn">TÜM ÇAĞRILARI TEMİZLE</button>
+        </div>
+      </div>
+      <div class="layout">
+        <!-- Sol Panel: Aktif Kullanıcılar + Log -->
+        <div id="leftPanel">
+          <div class="panel">
+            <h3>AKTİF PERSONEL</h3>
+            <ul id="usersList"></ul>
+          </div>
+          <div class="panel log-panel">
+            <h3>SİSTEM LOGU</h3>
+            <div id="systemLog"></div>
+          </div>
+        </div>
+        <!-- Orta: Harita + Çağrılar -->
+        <div id="centerArea">
+          <div id="mapControls">
+            <div id="smallMap"></div>
+            <button id="reqLocationBtn">KONUM TALEP ET</button>
+          </div>
+          <table id="callsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>ZAMAN</th>
+                <th>KONUM</th>
+                <th>AÇIKLAMA</th>
+                <th>ÖNCELİK</th>
+                <th>DURUM</th>
+                <th>NOT</th>
+                <th>İŞLEMLER</th>
+              </tr>
+            </thead>
+            <tbody id="callsBody"></tbody>
+          </table>
+        </div>
+        <!-- Sağ Panel: Chat -->
+        <div id="rightPanel">
+          <div class="panel">
+            <h3>İLETİŞİM</h3>
+            <div id="chatLog"></div>
+            <div class="chat-input">
+              <input id="chatInput" placeholder="Mesaj...">
+              <button onclick="sendChatMessage()">→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button id="sendNotifyBtn">BİLDİRİM GÖNDER (SEÇİLİ KULLANICIYA)</button>
+    </div>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

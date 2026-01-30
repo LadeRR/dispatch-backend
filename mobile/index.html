@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OCST Mobil</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: #0f0;
+      min-height: 100vh;
+      padding: 0;
+    }
+    
+    .container { 
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h2 { 
+      text-align: center;
+      margin: 20px 0;
+      color: #0f0;
+      text-shadow: 0 0 10px #0f0;
+      font-size: 1.8rem;
+    }
+    
+    .form-group {
+      margin: 15px 0;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #0f0;
+      font-size: 1rem;
+    }
+    
+    input, textarea, select, button { 
+      width: 100%;
+      padding: 16px;
+      font-size: 1.1rem;
+      background: #000;
+      color: #0f0;
+      border: 2px solid #0f0;
+      border-radius: 8px;
+      font-family: inherit;
+    }
+    
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    button { 
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    button:active { 
+      background: #0f0;
+      color: #000;
+      transform: scale(0.98);
+    }
+    
+    .btn-primary {
+      background: #0f0;
+      color: #000;
+      border-color: #0f0;
+      box-shadow: 0 4px 15px rgba(0, 255, 0, 0.4);
+    }
+    
+    .btn-primary:active {
+      background: #000;
+      color: #0f0;
+    }
+    
+    #chatLog { 
+      height: 200px;
+      overflow-y: auto;
+      border: 2px solid #0f0;
+      padding: 12px;
+      margin: 15px 0;
+      background: #000;
+      font-size: 0.95rem;
+      border-radius: 8px;
+    }
+    
+    #chatLog div {
+      margin: 8px 0;
+      padding: 8px;
+      background: rgba(0, 255, 0, 0.1);
+      border-left: 3px solid #0f0;
+      padding-left: 10px;
+      border-radius: 4px;
+    }
+    
+    .hidden { 
+      display: none !important;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(0, 255, 0, 0.2);
+      border: 1px solid #0f0;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      margin: 10px 0;
+    }
+    
+    .section {
+      background: rgba(0, 255, 0, 0.05);
+      border: 2px solid #0f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    h3 {
+      color: #0f0;
+      text-shadow: 0 0 8px #0f0;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+    
+    .chat-input-group {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .chat-input-group input {
+      flex: 1;
+    }
+    
+    .chat-input-group button {
+      width: auto;
+      padding: 16px 24px;
+    }
+  </style>
+</head>
+<body>
+  <div id="loginContainer" class="container">
+    <h2>🚔 OCST MOBİL GİRİŞ</h2>
+    <div class="section">
+      <div class="form-group">
+        <label>Kullanıcı Adı</label>
+        <input id="username" placeholder="Kullanıcı adınızı girin" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Şifre</label>
+        <input id="password" type="password" placeholder="Şifrenizi girin" autocomplete="off">
+      </div>
+      <button class="btn-primary" onclick="login()">GİRİŞ YAP</button>
+    </div>
+  </div>
+
+  <div id="mainContainer" class="container hidden">
+    <h2>🚔 OCST MOBİL</h2>
+    <div class="status-badge">Sisteme Bağlı ✓</div>
+    
+    <div class="section">
+      <h3>Yeni Çağrı Oluştur</h3>
+      <div class="form-group">
+        <label>Konum / Adres</label>
+        <input id="location" placeholder="Örn: Taksim Meydanı">
+      </div>
+      <div class="form-group">
+        <label>Olay Açıklaması</label>
+        <textarea id="description" placeholder="Detaylı açıklama..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Öncelik Seviyesi</label>
+        <select id="priority">
+          <option>Düşük</option>
+          <option>Orta</option>
+          <option selected>Yüksek</option>
+          <option>Acil</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="sendCall()">ÇAĞRI GÖNDER</button>
+    </div>
+
+    <div class="section">
+      <h3>Dispatch İletişim</h3>
+      <div id="chatLog"></div>
+      <div class="chat-input-group">
+        <input id="chatInput" placeholder="Mesaj yazın...">
+        <button onclick="sendChat()">→</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script>
+    const socket = io('http://localhost:3000');
+    let user = null;
+
+    async function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      
+      if (!username) return alert('Kullanıcı adı girin');
+      if (!password) return alert('Şifre girin');
+
+      try {
+        const res = await fetch('http://localhost:3000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+        if (data.user) {
+          user = data.user;
+          document.getElementById('loginContainer').classList.add('hidden');
+          document.getElementById('mainContainer').classList.remove('hidden');
+          socket.emit('join', user.id);
+        } else {
+          alert(data.error || 'Giriş hatası');
+        }
+      } catch (err) {
+        alert('Bağlantı hatası: ' + err.message);
+      }
+    }
+
+    async function sendCall() {
+      const location = document.getElementById('location').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const priority = document.getElementById('priority').value;
+
+      if (!location || !description) {
+        return alert('Konum ve açıklama zorunlu!');
+      }
+
+      try {
+        const res = await fetch('http://localhost:3000/api/calls', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            location, 
+            description, 
+            priority,
+            createdBy: user.username // Çağrıyı oluşturan kullanıcı
+          })
+        });
+
+        if (res.ok) {
+          alert('✓ Çağrı başarıyla gönderildi!');
+          document.getElementById('location').value = '';
+          document.getElementById('description').value = '';
+        } else {
+          alert('Gönderme hatası');
+        }
+      } catch (err) {
+        alert('Hata: ' + err.message);
+      }
+    }
+
+    function sendChat() {
+      const text = document.getElementById('chatInput').value.trim();
+      if (!text || !user) return;
+      
+      socket.emit('chat-message', { 
+        userId: user.id,
+        username: user.username,
+        message: text
+      });
+      document.getElementById('chatInput').value = '';
+    }
+
+    socket.on('chat-message', (msg) => {
+      const log = document.getElementById('chatLog');
+      const username = msg.username || 'Bilinmeyen';
+      const message = msg.message || '';
+      
+      if (username && message) {
+        log.innerHTML += `<div><strong>${username}:</strong> ${message}</div>`;
+        log.scrollTop = log.scrollHeight;
+      }
+    });
+
+    socket.on('location-request', () => {
+      if (confirm('Dispatch konumunuzu öğrenmek istiyor. Paylaşmak ister misiniz?')) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            socket.emit('share-location', { 
+              lat: pos.coords.latitude, 
+              lon: pos.coords.longitude,
+              userId: user.id
+            });
+            alert('✓ Konum paylaşıldı');
+          },
+          (err) => alert('Konum alınamadı: ' + err.message),
+          { enableHighAccuracy: true }
+        );
+      }
+    });
+
+    socket.on('notification', (msg) => {
+      alert('📢 Dispatch Bildirimi:\n\n' + msg);
+    });
+
+    socket.on('chat-cleared', () => {
+      document.getElementById('chatLog').innerHTML = '';
+      alert('Sohbet temizlendi');
+    });
+
+    // Enter ile giriş yapma
+    document.getElementById('password').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') login();
+    });
+
+    // Enter ile mesaj gönderme
+    document.getElementById('chatInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendChat();
+    });
+  </script>
+</body>
+</html>
